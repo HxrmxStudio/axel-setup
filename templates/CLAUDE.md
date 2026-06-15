@@ -102,7 +102,7 @@ Every time a card is created or meaningfully scoped, set the `estimate` field. 1
 1. **Always create PRs as draft** — never open a PR directly as "ready for review".
 2. **Before marking ready:** run `/pr-review-toolkit:review-pr` AND call `advisor` to confirm the work is complete and has no blockers.
 2b. **If the PR touches frontend** (`.tsx/.jsx/.vue/.svelte/.css/.scss`): also run the `frontend-review` agent (or the `design-audit` skill) and resolve all BLOCKER findings before marking ready.
-3. **Only mark "Ready for review"** when both the toolkit review and advisor confirm no blockers.
+3. **Only mark "Ready for review"** when the toolkit review and advisor confirm no blockers, and any applicable step 2b frontend review has no unresolved BLOCKERs.
 
 ## Advisor (Always On)
 The `advisor` tool consults a stronger reviewer with full conversation context. Call it:
