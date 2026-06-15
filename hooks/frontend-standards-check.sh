@@ -6,12 +6,14 @@
 # the frontend-standards skill and the frontend-review agent. Invoked via bash, so all
 # array syntax below is bash-compatible.
 
-# Resolve edited file path (JSON stdin first, then env var) — same pattern as post-edit-lint.sh
+# Resolve edited file path — same sources as session-log-action.sh / PostToolUse hooks
 FILE=""
 if [ -n "$TOOL_INPUT_FILE_PATH" ]; then
   FILE="$TOOL_INPUT_FILE_PATH"
 elif [ -n "$HOOK_TOOL_INPUT" ]; then
   FILE=$(echo "$HOOK_TOOL_INPUT" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('file_path',''))" 2>/dev/null)
+elif [ -n "$TOOL_INPUT" ]; then
+  FILE=$(echo "$TOOL_INPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('file_path',''))" 2>/dev/null)
 fi
 
 if [ -z "$FILE" ] || [ ! -f "$FILE" ]; then

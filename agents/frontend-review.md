@@ -17,7 +17,7 @@ Read `~/.claude/skills/design-audit/SKILL.md` and evaluate the diff against:
 6. **Brand voice** (customer-facing copy only) — per design-audit section 6.
 
 ## Process
-1. Get the diff. Default: `git diff --merge-base origin/main -- ':(glob)**/*.tsx' ':(glob)**/*.jsx' ':(glob)**/*.vue' ':(glob)**/*.svelte' ':(glob)**/*.css' ':(glob)**/*.scss'`. Use the diff/range the caller specifies if given.
+1. Get the diff. Default: `git diff --merge-base origin/main -- ':(glob)**/*.tsx' ':(glob)**/*.jsx' ':(glob)**/*.ts' ':(glob)**/*.vue' ':(glob)**/*.svelte' ':(glob)**/*.css' ':(glob)**/*.scss'`. Use the diff/range the caller specifies if given.
 2. Read each changed component/hook in full — not just the diff hunks.
 3. Report grouped by severity:
    - **BLOCKER** — Architecture Rule or CRITICAL a11y violation. Must fix before ready.
