@@ -36,10 +36,12 @@ Fork-only (HxrmxStudio): make a teammate's AXEL build frontend with the same UX/
 - `skills/design-audit/` — vendored the lead's production UX/UI validator (single source of truth for the rules/checklist).
 - `skills/emil-design-eng/` — vendored polish/animation/micro-interaction skill.
 - `agents/frontend-review.md` — PR gate that reviews a frontend diff against the design-audit rubric and reports BLOCKER/ISSUE/POLISH findings.
+- `hooks/frontend-standards-check.sh` — PostToolUse gate on `Edit|Write|MultiEdit` to frontend files. Runs cheap deterministic checks (hardcoded hex colors, `: any`, leftover `console.log`, inline `style={{}}`) and reminds to run design-audit / frontend-review before the PR is ready. Non-blocking; silent when clean.
 - `docs/TEAM-FRONTEND.md` — teammate onboarding (install/update, verify, impeccable note).
 
 ### Changed
 - `templates/CLAUDE.md` — new "Frontend Engineering & UX/UI Standards" section + a frontend step in the PR Review Process (run `frontend-review` before marking ready).
+- `templates/settings.json` — wired the `frontend-standards-check.sh` PostToolUse hook.
 
 ---
 
