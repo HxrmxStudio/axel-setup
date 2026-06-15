@@ -101,6 +101,7 @@ Every time a card is created or meaningfully scoped, set the `estimate` field. 1
 ## PR Review Process (HARD RULE)
 1. **Always create PRs as draft** — never open a PR directly as "ready for review".
 2. **Before marking ready:** run `/pr-review-toolkit:review-pr` AND call `advisor` to confirm the work is complete and has no blockers.
+2b. **If the PR touches frontend** (`.tsx/.jsx/.vue/.svelte/.css/.scss`): also run the `frontend-review` agent (or the `design-audit` skill) and resolve all BLOCKER findings before marking ready.
 3. **Only mark "Ready for review"** when both the toolkit review and advisor confirm no blockers.
 
 ## Advisor (Always On)
@@ -128,6 +129,19 @@ After completing a task, creating a PR, or merging one, the agent MUST:
 - **Max 6 files per commit**, grouped by model/functionality
 - **Always write tests** for new features and bug fixes, including edge cases
 - **RAILS_ENV=staging = PRODUCTION** — never run without explicit confirmation
+
+## Frontend Engineering & UX/UI Standards
+
+Applies to any change touching frontend (`.tsx/.jsx/.vue/.svelte/.css/.scss`) or UX/UI.
+
+**Build discipline (Clean Code, enforced while writing):**
+- Components are presentational only; business logic lives in hooks; pure helpers in `lib/`/`utils/`.
+- SRP / DRY / KISS / YAGNI. Declarative naming, no single-letter vars, no `any`. Functions < 20 lines, components < 100, files < 400 (800 max). Immutable updates. No magic values.
+- Never hardcode colors or spacing — use the repo's design tokens and scale. The target repo's design system is authoritative.
+
+**Skills (use them, don't improvise):** the `frontend-standards` skill auto-activates and routes you — `design-audit` (review/refine, default), `emil-design-eng` (polish/animation), `frontend-design` + `ui-ux-pro-max` (greenfield + reference). Reach for `design-audit` before marking any frontend work ready.
+
+**Quality bar:** Linear / Stripe / Notion level — clean hierarchy, calm UX, coherent spacing. No decorative patterns without product value.
 
 ## Token & Context Efficiency
 - **Batch tool calls**: always run independent operations in parallel
