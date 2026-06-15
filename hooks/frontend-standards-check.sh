@@ -20,7 +20,7 @@ fi
 
 # Only act on frontend files
 case "$FILE" in
-  *.tsx|*.jsx|*.vue|*.svelte|*.css|*.scss) ;;
+  *.tsx|*.jsx|*.ts|*.vue|*.svelte|*.css|*.scss) ;;
   *) exit 0 ;;
 esac
 
