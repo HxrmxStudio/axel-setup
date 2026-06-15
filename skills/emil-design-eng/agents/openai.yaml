@@ -1,0 +1,6 @@
+interface:
+  display_name: "Emil Design Eng"
+  short_description: "Polish UI motion and details"
+  default_prompt: "Use $emil-design-eng to polish this interaction and make the UI feel right."
+policy:
+  allow_implicit_invocation: true
