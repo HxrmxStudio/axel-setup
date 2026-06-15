@@ -49,18 +49,24 @@ if grep -nE 'console\.(log|debug)' "$FILE" >/dev/null 2>&1; then
   findings+=("leftover console.log/debug — remove before PR")
 fi
 
-# Inline style objects with raw values
-if grep -nE 'style=\{\{' "$FILE" >/dev/null 2>&1; then
-  findings+=("inline style={{...}} — prefer design-system classes/tokens")
-fi
+# Inline style objects with raw values — JSX components only
+case "$FILE" in
+  *.tsx|*.jsx)
+    if grep -nE 'style=\{\{' "$FILE" >/dev/null 2>&1; then
+      findings+=("inline style={{...}} — prefer design-system classes/tokens")
+    fi ;;
+esac
 
 if [ ${#findings[@]} -eq 0 ]; then
   exit 0
 fi
 
-echo "frontend-standards: $(basename "$FILE")" >&2
-for finding in "${findings[@]}"; do
-  echo "   - $finding" >&2
-done
-echo "   -> run the design-audit skill / frontend-review agent before marking the PR ready" >&2
+# Surface findings to the AGENT via PostToolUse additionalContext (the mechanism
+# gsd-context-monitor.js uses). A plain `echo >&2; exit 0` reaches only the user
+# transcript, not the agent's context — so the reminder would be decorative.
+# Single-line message keeps the emitted JSON trivially valid.
+joined=$(printf '%s; ' "${findings[@]}")
+msg="frontend-standards on $(basename "$FILE"): ${joined}-> run the design-audit skill / frontend-review agent before marking the PR ready"
+
+python3 -c "import json,sys; print(json.dumps({'hookSpecificOutput': {'hookEventName': 'PostToolUse', 'additionalContext': sys.argv[1]}}))" "$msg" 2>/dev/null
 exit 0

@@ -209,7 +209,7 @@ The hook system runs automatically during Claude Code lifecycle events:
 | **PreToolUse** | staging guard | Warns before running anything with `RAILS_ENV=staging` (= production) |
 | **PostToolUse** | `proactive-resolver.sh` | Auto-starts Docker, PostgreSQL, Redis when they're down. Detects missing deps and suggests install commands |
 | **PostToolUse** | `post-edit-lint.sh` | Auto-runs rubocop/eslint/ruff after file edits (Ruby, TS/JS, Python) |
-| **PostToolUse** | `frontend-standards-check.sh` | After edits to frontend files (`.tsx/.jsx/.vue/.svelte/.css/.scss`), runs cheap deterministic checks (hardcoded colors, `: any`, `console.log`, inline styles) and reminds to run design-audit / frontend-review before the PR is ready. Non-blocking. |
+| **PostToolUse** | `frontend-standards-check.sh` | After edits to frontend files (`.tsx/.jsx/.ts/.vue/.svelte/.css/.scss`), runs cheap deterministic checks (hardcoded colors, `: any`, `console.log`, inline styles) and surfaces them to the agent via `additionalContext`, reminding to run design-audit / frontend-review before the PR is ready. Non-blocking. |
 | **PostToolUse** | `gsd-context-monitor.js` | Warns the agent when context window is running low (15% warning, 8% critical) with debounce and severity escalation |
 | **PostToolUse** | `session-log-action.sh` | Logs tool actions for session persistence |
 | **PostToolUse** | `session-checkpoint.sh` | Every ~40 tool calls, summarizes progress using Claude Sonnet |

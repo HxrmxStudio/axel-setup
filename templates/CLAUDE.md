@@ -101,7 +101,7 @@ Every time a card is created or meaningfully scoped, set the `estimate` field. 1
 ## PR Review Process (HARD RULE)
 1. **Always create PRs as draft** — never open a PR directly as "ready for review".
 2. **Before marking ready:** run `/pr-review-toolkit:review-pr` AND call `advisor` to confirm the work is complete and has no blockers.
-2b. **If the PR touches frontend** (`.tsx/.jsx/.vue/.svelte/.css/.scss`): also run the `frontend-review` agent (or the `design-audit` skill) and resolve all BLOCKER findings before marking ready.
+2b. **If the PR touches frontend** (`.tsx/.jsx/.ts/.vue/.svelte/.css/.scss`): also run the `frontend-review` agent (or the `design-audit` skill) and resolve all BLOCKER findings before marking ready.
 3. **Only mark "Ready for review"** when the toolkit review and advisor confirm no blockers, and any applicable step 2b frontend review has no unresolved BLOCKERs.
 
 ## Advisor (Always On)
@@ -132,7 +132,7 @@ After completing a task, creating a PR, or merging one, the agent MUST:
 
 ## Frontend Engineering & UX/UI Standards
 
-Applies to any change touching frontend (`.tsx/.jsx/.vue/.svelte/.css/.scss`) or UX/UI.
+Applies to any change touching frontend (`.tsx/.jsx/.ts/.vue/.svelte/.css/.scss`) or UX/UI.
 
 **Build discipline (Clean Code, enforced while writing):**
 - Components are presentational only; business logic lives in hooks; pure helpers in `lib/`/`utils/`.
@@ -254,10 +254,9 @@ Heavy GSD (`gsd-plan-phase`, roadmaps, milestones, full `.planning/`) is for lar
 > Requires GSD ([get-shit-done](https://www.npmjs.com/package/get-shit-done-cc)) installed — AXEL's bootstrap installs it.
 
 ## Frontend Work
-When building ANY frontend UI:
-1. The `frontend-design` plugin activates automatically
-2. Also invoke `/ui-ux-pro-max` with the appropriate action
-3. Both work together: plugin provides aesthetic direction, skill provides implementation patterns
+The `frontend-standards` skill auto-activates on frontend work and routes you (see "Frontend Engineering & UX/UI Standards" above):
+1. **Greenfield** (new surface from scratch): `frontend-design` plugin for aesthetic direction + `ui-ux-pro-max` for implementation patterns.
+2. **Review / refine** existing UI: `design-audit` (default); polish/animation: `emil-design-eng`.
 
 ## Multi-Repo Work
 For features spanning 2+ repos, open parallel `claude` sessions:
