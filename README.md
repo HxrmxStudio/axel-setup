@@ -246,7 +246,7 @@ Slash commands you can use in Claude Code:
 
 GSD's own commands (now `/gsd-*` skills) are provided by the [get-shit-done](https://www.npmjs.com/package/get-shit-done-cc) installer, not AXEL — see the note at the top of this README.
 
-### Agents (23)
+### Agents
 
 Specialized subagents that Claude Code can spawn for focused tasks:
 
@@ -255,7 +255,7 @@ Specialized subagents that Claude Code can spawn for focused tasks:
 | **Verification** | `excelsior-verifier`, `production-validator` |
 | **Code Quality** | `bughunter`, `security-check`, `cleanup`, `perf` |
 | **Development** | `feature`, `debug`, `tdd-mainder`, `test-gen`, `api-design` |
-| **Review** | `review`, `compare-branch`, `changelog` |
+| **Review** | `review`, `frontend-review`, `compare-branch`, `changelog` |
 | **Operations** | `deploy-check`, `db-check`, `incident` |
 | **Multi-repo** | `cross-repo`, `linear-task` |
 | **Communication** | `draft-message`, `sprint-summary` |
@@ -301,10 +301,13 @@ watch -n 10 -c ~/.claude/tools/session-live.sh
 - The `5h-sesion` column shows how much of the limit **this specific session** consumed (`end% - start%`)
 - The status bar shows both: `5h:22% (+3.2%)` = 22% total, this session used 3.2%
 
-### Skills (2 + 1 optional)
+### Skills
 
 Multi-file skills with data and scripts:
 
+- **frontend-standards** — proactive frontend build discipline (Clean Code / SoC) + router to the right design skill; auto-activates on frontend edits
+- **design-audit** — default UX/UI validator encoding the team's production HARD RULES (architecture, design system, a11y, brand voice)
+- **emil-design-eng** — polish, animation, and micro-interaction design engineering
 - **memory-review** — Review, optimize, and deduplicate the persistent memory system
 - **ui-ux-pro-max** — UI/UX design intelligence with 67 styles, 96 palettes, 57 font pairings, 25 chart types, 13 frontend stacks
 - **posthog-weekly** _(optional, requires `--enable-posthog` at install)_ — Weekly analytical review of your PostHog workspace. Finds dead events, regressions, instrumentation gaps, error triage debt; suggests cohorts to create; persists a 14-day cached snapshot that other commands can read for daily/sprint reports.

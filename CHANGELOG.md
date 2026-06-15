@@ -27,6 +27,22 @@ Releases are grouped by date and logical scope. npm package releases use semver 
 
 ---
 
+## [2026-06-15] — Team frontend standardization (fork)
+
+Fork-only (HxrmxStudio): make a teammate's AXEL build frontend with the same UX/UI + Clean Code standards as the lead, so post-hoc correction drops to a minimum.
+
+### Added
+- `skills/frontend-standards/` — proactive build-time frontend discipline (SoC, presentational components, business logic in hooks, SRP/DRY/KISS) + a router to the right design skill. Auto-activates on frontend edits and vocabulary.
+- `skills/design-audit/` — vendored the lead's production UX/UI validator (single source of truth for the rules/checklist).
+- `skills/emil-design-eng/` — vendored polish/animation/micro-interaction skill.
+- `agents/frontend-review.md` — PR gate that reviews a frontend diff against the design-audit rubric and reports BLOCKER/ISSUE/POLISH findings.
+- `docs/TEAM-FRONTEND.md` — teammate onboarding (install/update, verify, impeccable note).
+
+### Changed
+- `templates/CLAUDE.md` — new "Frontend Engineering & UX/UI Standards" section + a frontend step in the PR Review Process (run `frontend-review` before marking ready).
+
+---
+
 ## [0.2.1] 2026-06-13 OIDC trusted publishing
 
 ### Changed
