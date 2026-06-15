@@ -1,6 +1,6 @@
 ---
 name: frontend-standards
-description: "Proactive frontend build standards and skill router for the team. Use when writing or modifying frontend code (.tsx/.jsx/.vue/.svelte/.css/.scss) or when the task mentions component, hook, presentational, business logic, SoC, clean code, SRP, DRY, KISS, modular, design, UX, UI, polish, refinar, spacing, layout, popover, tooltip, accessibility, a11y, design tokens. Routes to design-audit (review), emil-design-eng (polish), impeccable (modal workflow, lead-local), frontend-design (greenfield), ui-ux-pro-max (reference)."
+description: "Proactive frontend build standards and skill router for the team. Use when writing or modifying frontend code (.ts/.tsx/.jsx/.vue/.svelte/.css/.scss) or when the task mentions component, hook, presentational, business logic, SoC, clean code, SRP, DRY, KISS, modular, design, UX, UI, polish, refinar, spacing, layout, popover, tooltip, accessibility, a11y, design tokens. Routes to design-audit (review), emil-design-eng (polish), impeccable (modal workflow, lead-local), frontend-design (greenfield), ui-ux-pro-max (reference)."
 license: MIT
 ---
 
@@ -9,7 +9,7 @@ license: MIT
 This skill carries the team's build-time frontend discipline and routes you to the right specialist skill. It is the PROACTIVE counterpart to `design-audit` (which VALIDATES finished work). Do not duplicate design-audit's checklists here — defer to it.
 
 ## When this activates
-- Writing or editing `.tsx/.jsx/.vue/.svelte/.css/.scss`
+- Writing or editing `.ts/.tsx/.jsx/.vue/.svelte/.css/.scss`
 - Task mentions: component, hook, presentational, business logic, SoC, clean code, SRP/DRY/KISS, modular, design, UX/UI, polish, refinar, spacing, layout, popover, tooltip, a11y, design tokens
 
 ## 1. Clean Code frontend rules (apply WHILE writing)

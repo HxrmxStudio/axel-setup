@@ -1,5 +1,5 @@
 ---
-description: Frontend/UX quality gate. Reviews a frontend diff against the team's Clean Code + design-system + accessibility + brand-voice standards and reports findings by severity. Run before marking any PR that touches .tsx/.jsx/.vue/.svelte/.css/.scss as ready.
+description: Frontend/UX quality gate. Reviews a frontend diff against the team's Clean Code + design-system + accessibility + brand-voice standards and reports findings by severity. Run before marking any PR that touches .ts/.tsx/.jsx/.vue/.svelte/.css/.scss as ready.
 tools: ["Bash", "Read", "Grep", "Glob"]
 ---
 
