@@ -95,6 +95,16 @@
         ]
       },
       {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.claude/hooks/frontend-standards-check.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
         "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
         "hooks": [
           {
