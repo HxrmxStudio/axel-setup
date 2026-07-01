@@ -17,7 +17,7 @@ TOOL_OUTPUT=$(printf '%s' "$INPUT" | jq -r '.tool_response.text // .tool_respons
 # Cheap early-out: only proceed if the output looks like it contains an error.
 # This keeps the hook a no-op on successful commands without relying on an
 # exit code (which the PostToolUse contract does not provide).
-if ! printf '%s' "$TOOL_OUTPUT" | grep -qiE "error|refused|not connect|cannot connect|cannot find|no module|not found|does not exist|already in use|pending|failed|denied"; then
+if ! printf '%s' "$TOOL_OUTPUT" | grep -qiE "docker daemon|Cannot connect to the Docker|docker\.sock|Is the docker daemon running|docker:.*command not found|PG::|postgresql.*refused|could not connect.*5432|could not connect.*5433|connection to server.*failed.*postgres|Redis.*refused|ECONNREFUSED.*6379|Redis::CannotConnectError|redis.*not connect|mysql.*refused|ECONNREFUSED.*3306|Access denied for user.*mysql|Cannot find module|MODULE_NOT_FOUND|ERR_MODULE_NOT_FOUND|Could not find gem|Bundler::GemNotFound|bundle install|Gem::MissingSpecError|ModuleNotFoundError|No module named|ImportError.*No module|EADDRINUSE|Address already in use|port.*already.*use|bind.*address already|database.*does not exist|Unknown database|FATAL.*database.*not exist|Migrations are pending|pending migration|migrate.*first"; then
   exit 0
 fi
 
