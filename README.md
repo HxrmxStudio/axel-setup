@@ -1,5 +1,10 @@
 # AXEL Setup — Claude Code Power Configuration
 
+[![npm version](https://img.shields.io/npm/v/axel-setup.svg)](https://www.npmjs.com/package/axel-setup)
+[![CI](https://github.com/cveralyon/axel-setup/actions/workflows/ci.yml/badge.svg)](https://github.com/cveralyon/axel-setup/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Node >=18](https://img.shields.io/node/v/axel-setup)](https://www.npmjs.com/package/axel-setup)
+
 **AXEL** = **A**utonomous e**X**celsior **E**ngineering **L**ayer
 
 A complete, production-grade configuration package for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that transforms it into a proactive engineering partner. Includes session persistence, automatic memory, proactive error resolution, a curated suite of specialized agents and slash commands, and a real-time usage monitor.
@@ -46,18 +51,18 @@ See [AXEL Multi-Runtime Roadmap](docs/roadmap/multi-runtime.md) for the adapter 
 
 ## Quick Start
 
-The npm registry install is the primary path:
+The recommended install path is directly through npx:
 
 ```bash
-npx axel-setup --dry-run --user-name "Your Name"
+npx axel-setup@0.4.0 --dry-run --user-name "Your Name"
 ```
 
 By default AXEL uses `--profile core`, a public safe Claude Code install that keeps conservative permissions and skips optional side effects such as plugin installation, usage monitor launchd setup, keybindings, and the external GSD installer. Use `--profile personal` or `--profile full` when you explicitly want the fuller local automation setup.
 
-For a macOS one-line installer, use the curl wrapper. It checks for Claude Code, jq, zsh, and Node before delegating to the packaged npm release:
+Alternatively, for a macOS one-line installer, use the pinned curl wrapper. It checks for Claude Code, jq, zsh, and Node before delegating to the packaged npm release:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/cveralyon/axel-setup/main/install.sh | bash -s -- --dry-run --user-name "Your Name"
+curl -fsSL https://raw.githubusercontent.com/cveralyon/axel-setup/v0.4.0/install.sh | bash -s -- --dry-run --user-name "Your Name"
 ```
 
 Before the first npm publish, use the same wrapper against the GitHub package source:
@@ -85,7 +90,7 @@ bash bootstrap.sh --user-name "Your Name"
 Run publish commands from the repository root, where `package.json` lives:
 
 ```bash
-cd /Users/cveralyon/axel-onboarding
+cd <repo-root>
 npm whoami
 npm run check
 npm run publish:dry-run
@@ -95,7 +100,7 @@ npm publish --access public
 From another directory, pass the package path explicitly:
 
 ```bash
-npm publish /Users/cveralyon/axel-onboarding --access public
+npm publish <repo-root> --access public
 ```
 
 ### Maintainer Release Automation
@@ -185,6 +190,17 @@ bash bootstrap.sh --dry-run
 
 **Safe to run multiple times.** The bootstrap is fully additive — it only adds what's missing, proposes upgrades for existing files, and never overwrites your configuration, memory, or CLAUDE.md.
 
+### Optional: iTerm2 session theming (macOS)
+
+A separate, opt-in add-on under [`extras/iterm-theming/`](extras/iterm-theming/) gives each iTerm2 session a distinct, stable tab color plus a directory and git branch badge, so parallel sessions are easy to tell apart at a glance. It is **not** run by `bootstrap.sh`: it is macOS + iTerm2 only, and it is the one component that writes outside `~/.claude` (to `~/.config/iterm`, `~/.zshrc`, and iTerm2 DynamicProfiles). Install it explicitly:
+
+```bash
+bash extras/iterm-theming/install.sh            # install (idempotent, backs up ~/.zshrc)
+bash extras/iterm-theming/install.sh --dry-run  # preview, change nothing
+```
+
+See [`extras/iterm-theming/README.md`](extras/iterm-theming/README.md) for what it does, the commands it adds, and how to revert.
+
 ## Prerequisites
 
 | Tool | Why | Install |
@@ -209,6 +225,7 @@ The hook system runs automatically during Claude Code lifecycle events:
 | **PreToolUse** | staging guard | Warns before running anything with `RAILS_ENV=staging` (= production) |
 | **PostToolUse** | `proactive-resolver.sh` | Auto-starts Docker, PostgreSQL, Redis when they're down. Detects missing deps and suggests install commands |
 | **PostToolUse** | `post-edit-lint.sh` | Auto-runs rubocop/eslint/ruff after file edits (Ruby, TS/JS, Python) |
+| **PostToolUse** | `frontend-standards-check.sh` | After edits to frontend files (`.tsx/.jsx/.ts/.vue/.svelte/.css/.scss`), runs cheap deterministic checks (hardcoded colors, `: any`, `console.log`, inline styles) and surfaces them to the agent via `additionalContext`, reminding to run design-audit / frontend-review before the PR is ready. Non-blocking. |
 | **PostToolUse** | `gsd-context-monitor.js` | Warns the agent when context window is running low (15% warning, 8% critical) with debounce and severity escalation |
 | **PostToolUse** | `session-log-action.sh` | Logs tool actions for session persistence |
 | **PostToolUse** | `session-checkpoint.sh` | Every ~40 tool calls, summarizes progress using Claude Sonnet |
@@ -246,7 +263,7 @@ Slash commands you can use in Claude Code:
 
 GSD's own commands (now `/gsd-*` skills) are provided by the [get-shit-done](https://www.npmjs.com/package/get-shit-done-cc) installer, not AXEL — see the note at the top of this README.
 
-### Agents (23)
+### Agents
 
 Specialized subagents that Claude Code can spawn for focused tasks:
 
@@ -255,7 +272,7 @@ Specialized subagents that Claude Code can spawn for focused tasks:
 | **Verification** | `excelsior-verifier`, `production-validator` |
 | **Code Quality** | `bughunter`, `security-check`, `cleanup`, `perf` |
 | **Development** | `feature`, `debug`, `tdd-mainder`, `test-gen`, `api-design` |
-| **Review** | `review`, `compare-branch`, `changelog` |
+| **Review** | `review`, `frontend-review`, `compare-branch`, `changelog` |
 | **Operations** | `deploy-check`, `db-check`, `incident` |
 | **Multi-repo** | `cross-repo`, `linear-task` |
 | **Communication** | `draft-message`, `sprint-summary` |
@@ -301,10 +318,13 @@ watch -n 10 -c ~/.claude/tools/session-live.sh
 - The `5h-sesion` column shows how much of the limit **this specific session** consumed (`end% - start%`)
 - The status bar shows both: `5h:22% (+3.2%)` = 22% total, this session used 3.2%
 
-### Skills (2 + 1 optional)
+### Skills
 
 Multi-file skills with data and scripts:
 
+- **frontend-standards** — proactive frontend build discipline (Clean Code / SoC) + router to the right design skill; auto-activates on frontend edits
+- **design-audit** — default UX/UI validator encoding the team's production HARD RULES (architecture, design system, a11y, brand voice)
+- **emil-design-eng** — polish, animation, and micro-interaction design engineering
 - **memory-review** — Review, optimize, and deduplicate the persistent memory system
 - **ui-ux-pro-max** — UI/UX design intelligence with 67 styles, 96 palettes, 57 font pairings, 25 chart types, 13 frontend stacks
 - **posthog-weekly** _(optional, requires `--enable-posthog` at install)_ — Weekly analytical review of your PostHog workspace. Finds dead events, regressions, instrumentation gaps, error triage debt; suggests cohorts to create; persists a 14-day cached snapshot that other commands can read for daily/sprint reports.
@@ -438,7 +458,7 @@ Edit `~/.claude/settings.json` and add entries to the relevant event:
 
 ### Language
 
-Default is Spanish. Change `"language"` in `settings.json` to your preferred language.
+The default language in the generated `CLAUDE.md` personal template is Spanish. This applies only to the template file written during install — the CLI itself, the documentation, and all hook/agent code are in English. Change `"language"` in `settings.json` to your preferred language for hook output (session summaries, memory extraction, etc.).
 
 ### Team CLAUDE.md
 
@@ -449,6 +469,14 @@ The template at `~/CLAUDE.md` (created only if you don't have one) includes:
 - Multi-repo workflow guidelines
 
 Customize it with your team's specific repos, conventions, and rules.
+
+## Security
+
+AXEL writes exclusively to `~/.claude` (hooks, agents, commands, skills, settings). All installs are additive: existing files are never silently overwritten, a backup is proposed before any replacement, and `settings.json` is deep-merged rather than replaced.
+
+**Permission profiles:** the default `--profile core` uses `acceptEdits` mode, which requires explicit confirmation before file edits. The `--profile personal` and `--profile full` profiles elevate to `bypassPermissions`, granting the agent broad autonomy. Only use those profiles when you understand and accept the expanded trust boundary.
+
+**Reporting vulnerabilities:** please use [GitHub private security advisories](https://github.com/cveralyon/axel-setup/security/advisories/new) to report security issues. See [`SECURITY.md`](./SECURITY.md) for scope, response commitment, and contact details.
 
 ## Contributing
 

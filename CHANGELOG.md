@@ -9,21 +9,53 @@ Releases are grouped by date and logical scope. npm package releases use semver 
 
 ## [Unreleased]
 
+---
+
+## [0.4.0] 2026-06-28 iTerm2 session theming add-on
+
 ### Added
-- `axel-setup review-upgrades` for target-aware inspection of generated upgrade proposals before manual apply.
-- `core` install profile as the public safe default for reusable Claude Code setup.
-- Release automation now supports npm Trusted Publishing via GitHub Actions OIDC, with an `NPM_TOKEN` provenance fallback for first publish or migration windows.
-- `install.sh` curl wrapper for a macOS one-line install path that delegates to the packaged AXEL release.
-- Fixture-driven hook harness covering PreToolUse model routing, PostToolUse action logging, and Stop session persistence without a live Claude session.
-- `axel-setup metrics [--json]` report for context-budget, usage-monitor, and hook-harness impact signals generated from package assets and public fixtures only.
+- `extras/iterm-theming/` optional add-on (macOS + iTerm2 only): per-session tab color, directory plus git branch badge, `tabname`/`tabcolor` helpers, and an opt-in "Claude" dynamic profile (bigger badge, confirm-before-closing, unlimited scrollback). Installed explicitly via `extras/iterm-theming/install.sh` (idempotent, backs up `~/.zshrc`, ShellCheck-clean). Not run by `bootstrap.sh`, which stays additive to `~/.claude` only.
 
 ### Changed
-- Default installs now use `--profile core`, keeping `personal` and `full` as explicit choices for fuller local automation.
-- Maintainer release notes now document npm verification commands and conservative rollback through fixed patch releases or `latest` dist-tag movement.
+- CI: `actions/checkout` bumped to v7 (#29) and `actions/setup-node` bumped to v6 (#27).
 
-### Fixed
-- Re-running the bootstrap with only `MEMORY.md` in the memory directory no longer exits early.
-- Portable targets now generate `axel-upgrades/REVIEW.md` and `MANIFEST.md` when local files differ from the package.
+---
+
+## [0.3.0] 2026-06-13 security and hooks hardening
+
+### Added
+- `SECURITY.md` with vulnerability scope, reporting channel (GitHub private security advisories), and response commitment.
+- `CODE_OF_CONDUCT.md` adopting Contributor Covenant v2.1.
+- `.github/dependabot.yml` for weekly GitHub Actions dependency updates.
+- `.editorconfig` with consistent LF, UTF-8, final newline, and 2-space indent across shell, JSON, YAML, JS, and Markdown files.
+- `.shellcheckrc` placeholder committing the project to ShellCheck defaults with a comment explaining the policy.
+- README badges (npm version, CI status, license, Node requirement) added just below the H1.
+- README Security section summarising install footprint, permission profile escalation, and vulnerability reporting.
+
+### Changed
+- `install.sh`: default package pinned to `axel-setup@0.3.0` (overridable via `AXEL_SETUP_PACKAGE` env). Prevents unintended upgrades via `@latest` on a curl pipe.
+- `README.md`: `npx axel-setup@0.3.0` is now the primary recommended install path, above the curl wrapper. The curl URL now points to the release tag (`v0.3.0`) instead of `main`.
+- `README.md`: Maintainer Publish Checklist no longer contains a hardcoded personal path; uses `<repo-root>` placeholder.
+- `README.md`: Language/Customization section clarifies that the Spanish default applies only to the generated personal `CLAUDE.md` template, not to the CLI or documentation.
+- `package.json`: version bumped to `0.3.0`.
+
+---
+
+## [2026-06-15] — Team frontend standardization (fork)
+
+Fork-only (HxrmxStudio): make a teammate's AXEL build frontend with the same UX/UI + Clean Code standards as the lead, so post-hoc correction drops to a minimum.
+
+### Added
+- `skills/frontend-standards/` — proactive build-time frontend discipline (SoC, presentational components, business logic in hooks, SRP/DRY/KISS) + a router to the right design skill. Auto-activates on frontend edits and vocabulary.
+- `skills/design-audit/` — vendored the lead's production UX/UI validator (single source of truth for the rules/checklist).
+- `skills/emil-design-eng/` — vendored polish/animation/micro-interaction skill.
+- `agents/frontend-review.md` — PR gate that reviews a frontend diff against the design-audit rubric and reports BLOCKER/ISSUE/POLISH findings.
+- `hooks/frontend-standards-check.sh` — PostToolUse gate on `Edit|Write|MultiEdit` to frontend files (`.tsx/.jsx/.ts/.vue/.svelte/.css/.scss`). Runs cheap deterministic checks (hardcoded hex colors, `: any`, leftover `console.log`, JSX inline `style={{}}`) and surfaces them to the agent via `hookSpecificOutput.additionalContext` (so the reminder reaches the agent's context, not just the user transcript). Non-blocking; silent when clean.
+- `docs/TEAM-FRONTEND.md` — teammate onboarding (install/update, verify, impeccable note).
+
+### Changed
+- `templates/CLAUDE.md` — new "Frontend Engineering & UX/UI Standards" section + a frontend step in the PR Review Process (run `frontend-review` before marking ready).
+- `templates/settings.json` — wired the `frontend-standards-check.sh` PostToolUse hook.
 
 ---
 
